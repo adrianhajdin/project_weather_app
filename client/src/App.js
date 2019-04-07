@@ -11,20 +11,21 @@ class App extends Component {
   }
 
   componentDidMount() {
-    const { geolocation } = this.state;
-
-    this.getCoords()
-      .then(() => {
-        axios.post('/weather', geolocation)
-          .then(() => {
-            axios.get('/weather')
-              .then(({ data: { forecastData, location } }) => this.setState({ forecastData, location }))
-          })
-      })
+    this.getCoords();
   }
 
   getCoords = async () => {
-    await navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => this.setState({ geolocation: { latitude, longitude } }));
+    await navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
+      this.setState({ geolocation: { latitude, longitude } }, () => {
+        axios.post('/weather', this.state.geolocation)
+          .then(() => {
+            axios.get('/weather')
+              .then(({ data: { forecastData, location } }) => {
+                this.setState({ forecastData, location });
+              });
+          });
+      });
+    });
   }
 
   render() {
@@ -32,9 +33,9 @@ class App extends Component {
 
     return (
       <div>
-        <WeatherCard forecastData={forecastData} location={location} loaded={loaded}/>
+        <WeatherCard forecastData={forecastData} location={location} loaded={loaded} />
       </div>
-    )
+    );
   }
 }
 

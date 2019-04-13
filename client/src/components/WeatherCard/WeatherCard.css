@@ -3,12 +3,16 @@
 html, body {
     background-color: #F3F3F3;
     font-family: 'Roboto', sans-serif;
+    height: 100vh;
 }
 
 .card {
     margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-top: 5%;
-    padding: 5px 30px;
+    padding: 0 30px;
     width: 290px;
     height: 470px;
     border-radius: 3px;
@@ -17,10 +21,7 @@ html, body {
 }
 
 
-h1,
-h2,
-h3,
-h4 {
+h1, h2, h3, h4 {
     position: relative;
 }
 

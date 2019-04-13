@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import Loader from 'react-loader-spinner';
 import WeatherCard from './components/WeatherCard/WeatherCard';
 
 class App extends Component {
@@ -8,6 +9,7 @@ class App extends Component {
     geolocation: { latitude: 0, longitude: 0 },
     forecastData: {},
     location: {},
+    isLoading: false,
   }
 
   componentDidMount() {
@@ -15,13 +17,14 @@ class App extends Component {
   }
 
   getCoords = async () => {
+    this.setState({ isLoading: true });
     await navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
       this.setState({ geolocation: { latitude, longitude } }, () => {
         axios.post('/weather', this.state.geolocation)
           .then(() => {
             axios.get('/weather')
               .then(({ data: { forecastData, location } }) => {
-                this.setState({ forecastData, location });
+                this.setState({ forecastData, location, isLoading: false });
               });
           });
       });
@@ -29,11 +32,11 @@ class App extends Component {
   }
 
   render() {
-    const { forecastData, location, loaded } = this.state;
+    const { forecastData, location, isLoading } = this.state;
 
     return (
       <div>
-        <WeatherCard forecastData={forecastData} location={location} loaded={loaded} />
+        <WeatherCard forecastData={forecastData} location={location} isLoading={isLoading} />
       </div>
     );
   }

@@ -5,8 +5,8 @@ import Loader from 'react-loader-spinner';
 
 import './WeatherCard.css';
 
-import locationPin from './location-pin.png';
-import iconImg from './sunny.png';
+import locationPin from '../../images/location-pin.png';
+import iconImg from '../../images/sunny.png';
 
 const WeatherCard = ({
   forecastData: {
